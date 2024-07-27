@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { DemoAngularMaterialModule } from './DemoAngularMaterialModule';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,8 @@ import { DemoAngularMaterialModule } from './DemoAngularMaterialModule';
   imports: [
     RouterOutlet, 
     DemoAngularMaterialModule, 
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

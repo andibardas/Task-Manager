@@ -3,6 +3,9 @@ import { Component } from '@angular/core';
 import { DemoAngularMaterialModule } from '../../../DemoAngularMaterialModule';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +15,8 @@ import { RouterModule } from '@angular/router';
     DemoAngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -21,7 +25,7 @@ export class LoginComponent {
   loginForm!: FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private snackBar: MatSnackBar) {
     this.loginForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]]
@@ -34,5 +38,13 @@ export class LoginComponent {
 
   onSubmit(): void {
     console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.value).subscribe((res) => {
+      console.log(res);
+      if (res.userId != null) {
+        this.snackBar.open('Login successful', 'Close', { duration: 5000 });
+      } else {
+        this.snackBar.open('Invalid credentials', 'Close', { duration: 5000, panelClass: "error-snackbar" });
+      }
+    })
   }
 }
