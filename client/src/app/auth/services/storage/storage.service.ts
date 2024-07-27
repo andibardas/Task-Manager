@@ -37,19 +37,19 @@ export class StorageService {
   }
 
   static isAdminLoggedIn(): boolean {
-      if(this.getToken() == null){
-        return false;
-      }
+    if (typeof localStorage !== 'undefined' && this.getToken() != null) {
       const role: string = this.getUserRole();
       return role === 'ADMIN';
+    }
+    return false;
   }
 
   static isEmployeeLoggedIn(): boolean {
-    if(this.getToken() == null){
-      return false;
+    if (typeof localStorage !== 'undefined' && this.getToken() != null) {
+      const role: string = this.getUserRole();
+      return role === 'EMPLOYEE';
     }
-    const role: string = this.getUserRole();
-    return role === 'EMPLOYEE';
+    return false;
   }
 
   static getUserId(): string {

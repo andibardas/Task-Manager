@@ -49,9 +49,13 @@ export class LoginComponent {
             StorageService.saveUser(user);
             StorageService.saveToken(res.jwt);
             if (StorageService.isAdminLoggedIn()) {
-                this.router.navigateByUrl('/admin/dashboard');
+                this.router.navigateByUrl('/admin/dashboard').then(() => {
+                    window.location.reload();
+                });
             } else if (StorageService.isEmployeeLoggedIn()) {
-                this.router.navigateByUrl('/employee/dashboard');
+                this.router.navigateByUrl('/employee/dashboard').then(() => {
+                    window.location.reload();
+                });
             }
             this.snackBar.open('Login successful', 'Close', { duration: 5000 });
         },

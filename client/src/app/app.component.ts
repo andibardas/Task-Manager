@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { DemoAngularMaterialModule } from './DemoAngularMaterialModule';
 import { HttpClientModule } from '@angular/common/http';
+import { StorageService } from './auth/services/storage/storage.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +12,27 @@ import { HttpClientModule } from '@angular/common/http';
     RouterOutlet, 
     DemoAngularMaterialModule, 
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'client';
+  isEmployeeLoggedin: boolean = StorageService.isEmployeeLoggedIn();
+  isAdminLoggedin: boolean = StorageService.isAdminLoggedIn();
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.isEmployeeLoggedin = StorageService.isEmployeeLoggedIn();
+    this.isAdminLoggedin = StorageService.isAdminLoggedIn();
+  }
+
+  logout(){
+    StorageService.logout();
+    this.isEmployeeLoggedin = false;
+    this.isAdminLoggedin = false;
+    this.router.navigateByUrl('/login');
+  }
 }
