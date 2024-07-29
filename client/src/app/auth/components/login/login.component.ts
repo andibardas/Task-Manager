@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StorageService } from '../../services/storage/storage.service';
+import { AppComponent } from '../../../app.component';
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent {
   loginForm!: FormGroup;
   hidePassword = true;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private snackBar: MatSnackBar, private router: Router, private appComponent: AppComponent) {
     this.loginForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, [Validators.required]]
@@ -49,13 +50,11 @@ export class LoginComponent {
             StorageService.saveUser(user);
             StorageService.saveToken(res.jwt);
             if (StorageService.isAdminLoggedIn()) {
-                this.router.navigateByUrl('/admin/dashboard').then(() => {
-                    window.location.reload();
-                });
+                this.router.navigateByUrl('/admin/dashboard');
+                this.appComponent.setIsAdminLoggedin(true);
             } else if (StorageService.isEmployeeLoggedIn()) {
-                this.router.navigateByUrl('/employee/dashboard').then(() => {
-                    window.location.reload();
-                });
+                this.router.navigateByUrl('/employee/dashboard');
+                this.appComponent.setIsEmployeeLoggedin(true);
             }
             this.snackBar.open('Login successful', 'Close', { duration: 5000 });
         },

@@ -24,9 +24,17 @@ export class AppComponent {
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.isEmployeeLoggedin = StorageService.isEmployeeLoggedIn();
-    this.isAdminLoggedin = StorageService.isAdminLoggedIn();
+  // ngOnInit() {
+  //   this.isEmployeeLoggedin = StorageService.isEmployeeLoggedIn();
+  //   this.isAdminLoggedin = StorageService.isAdminLoggedIn();
+  // }
+
+  setIsEmployeeLoggedin(isEmployeeLoggedin: boolean) {
+    this.isEmployeeLoggedin = isEmployeeLoggedin;
+  }
+
+  setIsAdminLoggedin(isAdminLoggedin: boolean) {
+    this.isAdminLoggedin = isAdminLoggedin;
   }
 
   logout(){

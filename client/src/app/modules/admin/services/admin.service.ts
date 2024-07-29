@@ -13,7 +13,7 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   getUsers(): Observable<any> {
-    if(StorageService.getToken() === undefined){
+    if(StorageService.getToken() == null){
       return new Observable();
     }
     return this.http.get(BASE_URL + 'api/admin/users', {
