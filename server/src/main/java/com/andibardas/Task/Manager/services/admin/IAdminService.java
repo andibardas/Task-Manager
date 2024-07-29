@@ -8,4 +8,8 @@ import java.util.List;
 public interface IAdminService {
     List<UserDto> getUsers();
     TaskDto createTask(TaskDto taskDto);
+
+    List<TaskDto> getAllTasks();
+
+    void deleteTask(Long id);
 }

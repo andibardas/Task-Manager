@@ -10,6 +10,7 @@ import com.andibardas.Task.Manager.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,5 +44,19 @@ public class AdminService implements IAdminService{
             return taskRepository.save(task).getTaskDto();
         }
         return null;
+    }
+
+    @Override
+    public List<TaskDto> getAllTasks() {
+        return taskRepository.findAll()
+                .stream()
+                .sorted(Comparator.comparing(Task::getDueDate).reversed())
+                .map(Task::getTaskDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
     }
 }

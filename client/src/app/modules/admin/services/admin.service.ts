@@ -27,7 +27,22 @@ export class AdminService {
     });
   }
 
+  getAllTasks(): Observable<any> {
+    return this.http.get(BASE_URL + 'api/admin/tasks', {
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
+  deleteTask(taskId: number): Observable<any> {
+    return this.http.delete(BASE_URL + 'api/admin/task/' + taskId, {
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
   private createAuthorizationHeader(): HttpHeaders {
     return new HttpHeaders().set('Authorization', 'Bearer ' + StorageService.getToken());
   }
+
+  
 }
+
