@@ -4,6 +4,8 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { HttpClientModule } from '@angular/common/http';
 import { DemoAngularMaterialModule } from '../../../../DemoAngularMaterialModule';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-task',
@@ -24,7 +26,7 @@ export class PostTaskComponent implements OnInit {
   listOfEmployees: any = [];
   listOfPriorities: any = ["LOW", "MEDIUM", "HIGH"];
 
-  constructor(private adminService: AdminService, private fb: FormBuilder) {
+  constructor(private adminService: AdminService, private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
     this.taskForm = this.fb.group({
       employeeId: [null, [Validators.required]],
       title: [null, [Validators.required]],
@@ -46,5 +48,13 @@ export class PostTaskComponent implements OnInit {
 
   postTask(){
     console.log(this.taskForm.value);
+    this.adminService.postTask(this.taskForm.value).subscribe((res) => {
+      if(res.id != null){
+        this.snackBar.open('Task created successfully', 'Close', {duration: 5000});
+        this.router.navigate(['/admin/dashboard']);
+      } else {
+        this.snackBar.open('Something went wrong', 'ERROR', {duration: 5000});
+      }
+    });
   }
 }
