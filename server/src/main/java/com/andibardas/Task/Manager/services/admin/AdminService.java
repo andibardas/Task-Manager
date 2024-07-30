@@ -4,6 +4,7 @@ import com.andibardas.Task.Manager.dto.TaskDto;
 import com.andibardas.Task.Manager.dto.UserDto;
 import com.andibardas.Task.Manager.entities.Task;
 import com.andibardas.Task.Manager.entities.User;
+import com.andibardas.Task.Manager.enums.TaskStatus;
 import com.andibardas.Task.Manager.enums.UserRole;
 import com.andibardas.Task.Manager.repositories.TaskRepository;
 import com.andibardas.Task.Manager.repositories.UserRepository;
@@ -39,7 +40,7 @@ public class AdminService implements IAdminService{
             task.setDescription(taskDto.getDescription());
             task.setDueDate(taskDto.getDueDate());
             task.setPriority(taskDto.getPriority());
-            task.setStatus(taskDto.getStatus());
+            task.setStatus(TaskStatus.PENDING);
             task.setUser(optionalUser.get());
             return taskRepository.save(task).getTaskDto();
         }
@@ -58,5 +59,35 @@ public class AdminService implements IAdminService{
     @Override
     public void deleteTask(Long id) {
         taskRepository.deleteById(id);
+    }
+
+    @Override
+    public TaskDto getTaskById(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        return optionalTask.map(Task::getTaskDto).orElse(null);
+    }
+
+    @Override
+    public TaskDto updateTask(Long id, TaskDto taskDto) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        if(optionalTask.isPresent()){
+            Task task = optionalTask.get();
+            task.setTitle(taskDto.getTitle());
+            task.setDescription(taskDto.getDescription());
+            task.setDueDate(taskDto.getDueDate());
+            task.setPriority(taskDto.getPriority());
+            task.setStatus(mapStringToStatus(String.valueOf(taskDto.getStatus())));
+            return taskRepository.save(task).getTaskDto();
+        }
+        return null;
+    }
+
+    private TaskStatus mapStringToStatus(String status){
+        return switch (status){
+            case "PENDING" -> TaskStatus.PENDING;
+            case "DEFERRED" -> TaskStatus.DEFERRED;
+            case "COMPLETED" -> TaskStatus.COMPLETED;
+            default -> TaskStatus.CANCELED;
+        };
     }
 }
