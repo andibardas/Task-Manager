@@ -40,7 +40,7 @@ public class AdminService implements IAdminService{
             task.setDescription(taskDto.getDescription());
             task.setDueDate(taskDto.getDueDate());
             task.setPriority(taskDto.getPriority());
-            task.setStatus(TaskStatus.PENDING);
+            task.setStatus(taskDto.getStatus());
             task.setUser(optionalUser.get());
             return taskRepository.save(task).getTaskDto();
         }
@@ -70,16 +70,27 @@ public class AdminService implements IAdminService{
     @Override
     public TaskDto updateTask(Long id, TaskDto taskDto) {
         Optional<Task> optionalTask = taskRepository.findById(id);
-        if(optionalTask.isPresent()){
+        Optional<User> optionalUser = userRepository.findById(taskDto.getEmployeeId());
+        if(optionalTask.isPresent() && optionalUser.isPresent()){
             Task task = optionalTask.get();
             task.setTitle(taskDto.getTitle());
             task.setDescription(taskDto.getDescription());
             task.setDueDate(taskDto.getDueDate());
             task.setPriority(taskDto.getPriority());
             task.setStatus(mapStringToStatus(String.valueOf(taskDto.getStatus())));
+            task.setUser(optionalUser.get());
             return taskRepository.save(task).getTaskDto();
         }
         return null;
+    }
+
+    @Override
+    public List<TaskDto> searchTaskByTitle(String title) {
+        return taskRepository.findAllByTitleContainingIgnoreCase(title)
+                .stream()
+                .sorted(Comparator.comparing(Task::getDueDate).reversed())
+                .map(Task::getTaskDto)
+                .collect(Collectors.toList());
     }
 
     private TaskStatus mapStringToStatus(String status){

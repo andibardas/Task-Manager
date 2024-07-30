@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { DemoAngularMaterialModule } from '../../../../DemoAngularMaterialModule';
 import { CommonModule } from '@angular/common';
@@ -23,9 +23,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DashboardComponent implements OnInit {
   listOfTasks: any = [];
+  searchForm!: FormGroup;
 
-  constructor(private adminService: AdminService, private snackBar: MatSnackBar) { 
-
+  constructor(private adminService: AdminService, private fb: FormBuilder, private snackBar: MatSnackBar) { 
+    this.searchForm = this.fb.group({
+      title: [null]
+    });
   }
   ngOnInit(): void {
     this.getTasks();
@@ -41,6 +44,18 @@ export class DashboardComponent implements OnInit {
     this.adminService.deleteTask(taskId).subscribe((res) => {
       this.snackBar.open('Task deleted successfully', 'Close', {duration: 5000});
       this.getTasks();
+    });
+  }
+
+  searchTask(){
+    this.listOfTasks = [];
+    const title = this.searchForm.get('title')?.value;
+    if(title == null || title == ''){
+      this.getTasks();
+      return;
+    }
+    this.adminService.searchTask(title).subscribe((res) => {
+      this.listOfTasks = res;
     });
   }
 }

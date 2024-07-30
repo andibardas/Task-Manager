@@ -16,4 +16,6 @@ public interface IAdminService {
     TaskDto getTaskById(Long id);
 
     TaskDto updateTask(Long id, TaskDto taskDto);
+
+    List<TaskDto> searchTaskByTitle(String title);
 }

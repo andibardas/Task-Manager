@@ -26,6 +26,7 @@ export class UpdateTaskComponent implements OnInit{
   updateTaskForm!: FormGroup;
   listOfEmployees: any = [];
   listOfPriorities: any = ["LOW", "MEDIUM", "HIGH"];
+  listOfStatus: any = ["COMPLETED", "DEFERRED", "CANCELED", "PENDING"];
 
   constructor(private adminService: AdminService, private route: ActivatedRoute, private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) { 
     this.updateTaskForm = this.fb.group({
@@ -33,7 +34,8 @@ export class UpdateTaskComponent implements OnInit{
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
       dueDate: [null, [Validators.required]],
-      priority: [null, [Validators.required]]
+      priority: [null, [Validators.required]],
+      status: [null, [Validators.required]]
     });
   }
 

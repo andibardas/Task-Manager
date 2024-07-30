@@ -25,6 +25,7 @@ export class PostTaskComponent implements OnInit {
   taskForm!: FormGroup;
   listOfEmployees: any = [];
   listOfPriorities: any = ["LOW", "MEDIUM", "HIGH"];
+  listOfStatus: any = ["COMPLETED", "DEFERRED", "CANCELED", "PENDING"];
 
   constructor(private adminService: AdminService, private fb: FormBuilder, private snackBar: MatSnackBar, private router: Router) {
     this.taskForm = this.fb.group({
@@ -32,7 +33,8 @@ export class PostTaskComponent implements OnInit {
       title: [null, [Validators.required]],
       description: [null, [Validators.required]],
       dueDate: [null, [Validators.required]],
-      priority: [null, [Validators.required]]
+      priority: [null, [Validators.required]],
+      status: [null, [Validators.required]]
     });
   }
 
