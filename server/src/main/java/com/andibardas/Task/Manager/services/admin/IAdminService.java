@@ -1,5 +1,6 @@
 package com.andibardas.Task.Manager.services.admin;
 
+import com.andibardas.Task.Manager.dto.CommentDto;
 import com.andibardas.Task.Manager.dto.TaskDto;
 import com.andibardas.Task.Manager.dto.UserDto;
 
@@ -18,4 +19,6 @@ public interface IAdminService {
     TaskDto updateTask(Long id, TaskDto taskDto);
 
     List<TaskDto> searchTaskByTitle(String title);
+
+    CommentDto createComment(Long taskId, String content);
 }
