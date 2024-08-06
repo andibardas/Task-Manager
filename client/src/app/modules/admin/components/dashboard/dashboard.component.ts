@@ -57,7 +57,5 @@ export class DashboardComponent implements OnInit {
     this.adminService.searchTask(title).subscribe((res) => {
       this.listOfTasks = res;
     });
-
-    // return;
   }
 }

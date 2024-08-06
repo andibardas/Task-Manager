@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findAllByTitleContainingIgnoreCase(String title);
+
+    List<Task> findAllByUserId(Long user_id);
 }
