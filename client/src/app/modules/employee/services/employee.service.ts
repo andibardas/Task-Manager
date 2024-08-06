@@ -21,6 +21,15 @@ export class EmployeeService {
     });
   }
 
+  updateTaskStatus(id: number, status: string): Observable<any> {
+    if(StorageService.getToken() == null){
+      return new Observable();
+    }
+    return this.http.get(BASE_URL + `api/employee/task/${id}/${status}`, {
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
   private createAuthorizationHeader(): HttpHeaders {
     return new HttpHeaders().set('Authorization', 'Bearer ' + StorageService.getToken());
   }

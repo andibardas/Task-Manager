@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DemoAngularMaterialModule } from '../../../../DemoAngularMaterialModule';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,7 @@ export class DashboardComponent implements OnInit {
 
   listOfTasks: any = [];
 
-  constructor(private service: EmployeeService) { }
+  constructor(private service: EmployeeService, private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getTasks();
@@ -34,6 +35,22 @@ export class DashboardComponent implements OnInit {
     this.service.getEmployeeTasksById().subscribe((res) => {
       console.log(res);
       this.listOfTasks = res;
+    });
+  }
+
+  updateTaskStatus(id: number, status: string){
+    this.service.updateTaskStatus(id, status).subscribe((res) => {
+      if(res.id != null){
+        console.log(res);
+        this.snackbar.open('Task status updated successfully', 'Close', {
+          duration: 5000
+        });
+        this.getTasks();
+      } else {
+        this.snackbar.open('Error updating task status', 'Close', {
+          duration: 5000
+        });
+      }
     });
   }
 

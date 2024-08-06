@@ -30,9 +30,13 @@
             </div>
             <mat-divider></mat-divider>
             <div class="actions">
-                <!-- <button mat-icon-button color="accent" class="view-button" routerLink="/admin/task-details/{{task.id}}">
-                    <mat-icon>visibility</mat-icon>
-                </button> -->
+                <button mat-icon-button color="primary" class="update-button" [matMenuTriggerFor]="statusMenu">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <mat-menu #statusMenu="matMenu">
+                    <button mat-menu-item (click)="updateTaskStatus(task.id, 'PENDING')">PENDING</button>
+                    <button mat-menu-item (click)="updateTaskStatus(task.id, 'COMPLETED')">COMPLETED</button>
+                </mat-menu>
             </div>
         </div>
     </mat-card>
