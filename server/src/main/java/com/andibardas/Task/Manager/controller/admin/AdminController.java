@@ -61,12 +61,17 @@ public class AdminController {
         return ResponseEntity.ok(adminService.searchTaskByTitle(title));
     }
 
-    @PostMapping("task/comment/{taskId}")
+    @PostMapping("/task/comment/{taskId}")
     public ResponseEntity<CommentDto> createComment(@PathVariable Long taskId, @RequestBody String content) {
         CommentDto createdComment = adminService.createComment(taskId, content);
         if(createdComment == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
+    }
+
+    @GetMapping("/comments/{taskId}")
+    public ResponseEntity<List<CommentDto>> getCommentsByTaskId(@PathVariable Long taskId) {
+        return ResponseEntity.ok(adminService.getCommentsByTaskId(taskId));
     }
 }

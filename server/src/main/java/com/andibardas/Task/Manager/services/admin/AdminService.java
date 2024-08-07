@@ -28,7 +28,7 @@ public class AdminService implements IAdminService{
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final CommentRepository commentRepository;
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @Override
     public List<UserDto> getUsers() {
@@ -114,6 +114,14 @@ public class AdminService implements IAdminService{
             return commentRepository.save(comment).getCommentDto();
         }
         throw new EntityNotFoundException("User or Task not found");
+    }
+
+    @Override
+    public List<CommentDto> getCommentsByTaskId(Long taskId) {
+        return commentRepository.findAllByTaskId(taskId)
+                .stream()
+                .map(Comment::getCommentDto)
+                .collect(Collectors.toList());
     }
 
     private TaskStatus mapStringToStatus(String status){
