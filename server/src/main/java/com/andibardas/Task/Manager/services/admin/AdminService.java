@@ -70,12 +70,6 @@ public class AdminService implements IAdminService{
     }
 
     @Override
-    public TaskDto getTaskById(Long id) {
-        Optional<Task> optionalTask = taskRepository.findById(id);
-        return optionalTask.map(Task::getTaskDto).orElse(null);
-    }
-
-    @Override
     public TaskDto updateTask(Long id, TaskDto taskDto) {
         Optional<Task> optionalTask = taskRepository.findById(id);
         Optional<User> optionalUser = userRepository.findById(taskDto.getEmployeeId());
@@ -99,6 +93,12 @@ public class AdminService implements IAdminService{
                 .sorted(Comparator.comparing(Task::getDueDate).reversed())
                 .map(Task::getTaskDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public TaskDto getTaskById(Long id) {
+        Optional<Task> optionalTask = taskRepository.findById(id);
+        return optionalTask.map(Task::getTaskDto).orElse(null);
     }
 
     @Override

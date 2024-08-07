@@ -42,15 +42,6 @@ export class AdminService {
     });
   }
 
-  getTaskById(taskId: number): Observable<any> {
-    if(StorageService.getToken() == null){
-      return new Observable();
-    }
-    return this.http.get(BASE_URL + 'api/admin/task/' + taskId, {
-      headers: this.createAuthorizationHeader()
-    });
-  }
-
   updateTask(id: number, taskDto: any): Observable<any> {
     return this.http.put(BASE_URL + `api/admin/task/${id}/edit`, taskDto, {
       headers: this.createAuthorizationHeader()
@@ -59,6 +50,15 @@ export class AdminService {
 
   searchTask(title: String): Observable<any>{
     return this.http.get(BASE_URL + `api/admin/tasks/search/${title}`, {
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
+  getTaskById(taskId: number): Observable<any> {
+    if(StorageService.getToken() == null){
+      return new Observable();
+    }
+    return this.http.get(BASE_URL + 'api/admin/task/' + taskId, {
       headers: this.createAuthorizationHeader()
     });
   }

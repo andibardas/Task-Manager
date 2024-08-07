@@ -14,11 +14,11 @@ public interface IAdminService {
 
     void deleteTask(Long id);
 
-    TaskDto getTaskById(Long id);
-
     TaskDto updateTask(Long id, TaskDto taskDto);
 
     List<TaskDto> searchTaskByTitle(String title);
+
+    TaskDto getTaskById(Long id);
 
     CommentDto createComment(Long taskId, String content);
 

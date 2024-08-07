@@ -42,11 +42,6 @@ public class AdminController {
         return ResponseEntity.ok(null);
     }
 
-    @GetMapping("/task/{id}")
-    public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
-        return ResponseEntity.ok(adminService.getTaskById(id));
-    }
-
     @PutMapping("/task/{id}/edit")
     public ResponseEntity<?> updateTask(@PathVariable Long id, @RequestBody TaskDto taskDto) {
         TaskDto updatedTask = adminService.updateTask(id, taskDto);
@@ -59,6 +54,11 @@ public class AdminController {
     @GetMapping("/tasks/search/{title}")
     public ResponseEntity<List<TaskDto>> searchTask(@PathVariable String title) {
         return ResponseEntity.ok(adminService.searchTaskByTitle(title));
+    }
+
+    @GetMapping("/task/{id}")
+    public ResponseEntity<TaskDto> getTaskById(@PathVariable Long id) {
+        return ResponseEntity.ok(adminService.getTaskById(id));
     }
 
     @PostMapping("/task/comment/{taskId}")
